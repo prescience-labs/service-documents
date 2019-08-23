@@ -1,6 +1,4 @@
 import logging
-
-from celery import task
 from django.contrib.postgres.fields import ArrayField, JSONField
 from django.db import models
 from django.db.models.signals import pre_save
@@ -26,15 +24,8 @@ def get_sentiment_analysis(sender, instance, **kwargs):
     if instance.sentiment_analysis is None or instance.force_analysis:
         instance.sentiment_analysis = text_analysis.get_sentiment_analysis()
 
-    if instance.topic_extraction is None or instance.force_analysis:
-        get_topic_extraction.delay(instance.id)
-
-    if instance.categorization is None or instance.force_analysis:
-        get_categorization.delay(instance.id)
-
     instance.force_analysis = False
 
-@task
 def get_categorization(document_id):
     logger.debug('get_categorization coming out of the queue')
     document = Document.objects.get(pk=document_id)
@@ -42,7 +33,6 @@ def get_categorization(document_id):
     document.categorization = text_analysis.get_categorization()
     document.save()
 
-@task
 def get_topic_extraction(document_id):
     logger.debug('get_categorization coming out of the queue')
     document = Document.objects.get(pk=document_id)
