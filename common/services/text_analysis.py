@@ -1,9 +1,7 @@
-import json
-import six
 import sys
-from google.cloud import language
-from google.cloud.language import enums
-from google.cloud.language import types
+
+import meaningcloud
+from django.conf import settings
 
 def serialize_entities(entities):
     result = []
@@ -34,43 +32,43 @@ def serialize_entities(entities):
     return json.dumps(result)
 
 class TextAnalysis:
-    client = language.LanguageServiceClient()
-    text = ""
-    sentiment_analysis = ""
-    aspects = []
+    model = 'IAB_en'
+    license_key = settings.MEANINGCLOUD_API_KEY
+    text = ''
+    language = ''
+    sentiment_analysis = ''
+    topic_extraction = ''
+    categorization = ''
 
-    def __init__(self, text):
+    def __init__(self, text, language='en'):
         self.text = text
-        self.set_sentiment_analysis_from_text()
-        self.set_aspects_from_sentiment_analysis()
+        self.language = language
 
-    def set_sentiment_analysis_from_text(self):
-        text = self.text
+    def get_topic_extraction(self):
+        topics_response =  meaningcloud.TopicsResponse(meaningcloud.TopicsRequest(
+            self.license_key,
+            txt=self.text,
+            lang=self.language,
+            topicType='ec',
+        ).sendReq())
+        self.topic_extraction = topics_response.getResults()
+        return self.topic_extraction
 
-        if isinstance(text, six.binary_type):
-            text = text.decode('utf-8')
-
-        document = types.Document(
-            content=text.encode('utf-8'),
-            type=enums.Document.Type.PLAIN_TEXT)
-
-        # Detect and send native Python encoding to receive correct word offsets.
-        encoding = enums.EncodingType.UTF32
-        if sys.maxunicode == 65535:
-            encoding = enums.EncodingType.UTF16
-
-        result = self.client.analyze_entity_sentiment(document, encoding)
-
-        self.sentiment_analysis = serialize_entities(result.entities)
+    def get_sentiment_analysis(self):
+        sentiment_response = meaningcloud.SentimentResponse(meaningcloud.SentimentRequest(
+            self.license_key,
+            lang=self.language,
+            txt=self.text,
+            txtf='plain',
+        ).sendReq())
+        self.sentiment_analysis = sentiment_response.getResults()
         return self.sentiment_analysis
 
-    def set_aspects_from_sentiment_analysis(self):
-        print(self.sentiment_analysis)
-        sa = json.loads(self.sentiment_analysis)
-        print(sa)
-        aspects = []
-        for entity in sa:
-            print(entity)
-            aspects.append(entity['aspect'])
-        self.aspects = aspects
-        return self.aspects
+    def get_categorization(self):
+        class_response = meaningcloud.ClassResponse(meaningcloud.ClassRequest(
+            self.license_key,
+            txt=self.text,
+            model=self.model,
+        ).sendReq())
+        self.categorization = class_response.getResults()
+        return self.categorization
