@@ -1,7 +1,7 @@
 from django.contrib import admin
 
-from common.models import Review
+from common.models import Document
 
-class ReviewAdmin(admin.ModelAdmin):
-    readonly_fields = ('sentiment_analysis',)
-admin.site.register(Review, ReviewAdmin)
+class DocumentAdmin(admin.ModelAdmin):
+    readonly_fields = ('sentiment_analysis', 'topic_extraction', 'categorization')
+admin.site.register(Document, DocumentAdmin)

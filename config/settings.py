@@ -9,7 +9,8 @@ https://docs.djangoproject.com/en/2.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
-
+import logging
+import logging.config
 import os
 
 from dotenv import find_dotenv, load_dotenv
@@ -26,9 +27,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', 'false').lower() == 'true'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,0.0.0.0').split(',')
 
 
 # Application definition
@@ -57,6 +58,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'config.urls'
+APPEND_SLASH=False
 
 TEMPLATES = [
     {
@@ -79,7 +81,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-
+REDIS_URL = os.getenv('REDIS_URL', 'redis://redis')
 DATABASES = {
     # 'default': {
     #     'ENGINE': 'django.db.backends.sqlite3',
@@ -94,6 +96,12 @@ DATABASES = {
         'PORT': os.environ.get('DB_PORT', 5432),
     }
 }
+
+# Celery
+BROKER_URL = REDIS_URL
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
 
 
 # Password validation
@@ -137,3 +145,32 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Text analysis
 MEANINGCLOUD_API_KEY = os.getenv('MEANINGCLOUD_API_KEY')
+
+# Logging
+LOG_LEVEL = os.getenv('LOG_LEVEL', 'DEBUG').upper()
+LOGGING_CONFIG = None
+logging.config.dictConfig({
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'console': {
+            'format': '%(levelname)-8s %(asctime)s %(name)s - %(message)s',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'console',
+        },
+    },
+    'loggers': {
+        # root logger
+        '': {
+            'level': LOG_LEVEL,
+            'handlers': ['console'],
+        },
+        'django.utils.autoreload': {
+            'level': 'INFO',
+        }
+    },
+})
