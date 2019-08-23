@@ -8,7 +8,6 @@ class DocumentList(generics.ListCreateAPIView):
     queryset = Document.objects.all()
     serializer_class = DocumentSerializer
 
-    @user_is_authenticated
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
 

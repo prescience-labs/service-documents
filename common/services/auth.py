@@ -27,6 +27,11 @@ def get_user_from_auth_header(request):
     return user
 
 def user_is_authenticated(func):
+    """Decorator for views
+    Add this decorator to check authentication from the Auth header.
+    If a user is not authenticated from the authorization header,
+    they will be denied access to the view.
+    """
     def wrap(obj, request, *args, **kwargs):
         user = get_user_from_auth_header(request)
         if user is None:
