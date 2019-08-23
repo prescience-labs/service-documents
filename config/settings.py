@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework_swagger',
 
     'common.apps.CommonConfig',
     'v1.apps.V1Config',
@@ -174,3 +175,21 @@ logging.config.dictConfig({
         }
     },
 })
+
+# Django Rest Framework
+# https://www.django-rest-framework.org/
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 50,
+    'EXCEPTION_HANDLER': 'common.services.exceptions.api_error_handler',
+}
+
+SWAGGER_SETTINGS = {
+    'DOC_EXPANSION': 'list',
+}
