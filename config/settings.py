@@ -33,6 +33,9 @@ DEBUG = os.getenv('DEBUG', 'false').lower() == 'true'
 
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,0.0.0.0').split(',')
 
+# TODO: THIS NEEDS TO CHANGE SOON
+CORS_ORIGIN_ALLOW_ALL = True
+
 
 # Application definition
 
@@ -45,12 +48,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework_swagger',
+    'corsheaders',
 
     'common.apps.CommonConfig',
     'v1.apps.V1Config',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
