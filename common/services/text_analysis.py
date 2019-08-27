@@ -21,6 +21,8 @@ class TextAnalysis:
     def get_topic_extraction(self):
         logger.debug('TextAnalysis.get_topic_extraction()')
         if self.topic_extraction is None:
+            logger.debug('topic_extraction not set')
+            logger.debug('setting topic_extraction')
             topics_response =  meaningcloud.TopicsResponse(meaningcloud.TopicsRequest(
                 self.license_key,
                 txt=self.text,
@@ -28,6 +30,7 @@ class TextAnalysis:
                 topicType='ec',
             ).sendReq())
             self.topic_extraction = topics_response.getResults()
+        logger.debug(self.topic_extraction)
         return self.topic_extraction
 
     def get_sentiment_analysis(self):
@@ -48,6 +51,8 @@ class TextAnalysis:
     def get_categorization(self):
         logger.debug('TextAnalysis.get_categorization()')
         if self.categorization is None:
+            logger.debug('categorization not set')
+            logger.debug('setting categorization')
             class_response = meaningcloud.ClassResponse(meaningcloud.ClassRequest(
                 self.license_key,
                 txt=self.text,
