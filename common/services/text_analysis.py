@@ -6,13 +6,13 @@ from django.conf import settings
 logger = logging.getLogger(__name__)
 
 class TextAnalysis:
-    model = 'IAB_en'
-    license_key = settings.MEANINGCLOUD_API_KEY
-    text = ''
-    language = 'en'
-    topic_extraction = None
-    sentiment_analysis = None
-    categorization = None
+    model               = 'IAB_en'
+    license_key         = settings.MEANINGCLOUD_API_KEY
+    text                = ''
+    language            = 'en'
+    topic_extraction    = None
+    sentiment_analysis  = None
+    categorization      = None
 
     def __init__(self, text, language='en'):
         self.text = text

@@ -8,6 +8,6 @@ class DocumentSerializer(serializers.ModelSerializer):
     text = serializers.CharField()
 
     class Meta:
-        model = Document
-        fields = ['id', 'text', 'sentiment_analysis']
-        read_only_fields = ['sentiment_analysis']
+        model               = Document
+        fields              = ['id', 'text', 'sentiment_analysis']
+        read_only_fields    = ['sentiment_analysis']

@@ -11,23 +11,23 @@ from common.services.text_analysis import TextAnalysis
 logger = logging.getLogger(__name__)
 
 class Document(BaseModel, models.Model):
-    text = models.TextField()
-    sentiment_analysis = JSONField(blank=True, null=True, help_text=_("From Meaningcloud's Sentiment Analysis"))
-    topic_extraction = JSONField(blank=True, null=True, help_text=_("From Meaningcloud's Topic Extraction"))
-    categorization = JSONField(blank=True, null=True, help_text=_("From Meaningcloud's Deep Categorization"))
-    force_analysis = models.BooleanField(default=False, help_text=_('Run all analyses during the next analysis job.'))
+    text                = models.TextField()
+    sentiment_analysis  = JSONField(blank=True, null=True, help_text=_("From Meaningcloud's Sentiment Analysis"))
+    topic_extraction    = JSONField(blank=True, null=True, help_text=_("From Meaningcloud's Topic Extraction"))
+    categorization      = JSONField(blank=True, null=True, help_text=_("From Meaningcloud's Deep Categorization"))
+    force_analysis      = models.BooleanField(default=False, help_text=_('Run all analyses during the next analysis job.'))
 
     def get_sentiment_analysis(self):
-        text_analysis = TextAnalysis(self.text)
+        text_analysis           = TextAnalysis(self.text)
         self.sentiment_analysis = text_analysis.get_sentiment_analysis()
 
     def get_topic_extraction(self):
-        text_analysis = TextAnalysis(self.text)
-        self.topic_extraction = text_analysis.get_topic_extraction()
+        text_analysis           = TextAnalysis(self.text)
+        self.topic_extraction   = text_analysis.get_topic_extraction()
 
     def get_categorization(self):
-        text_analysis = TextAnalysis(self.text)
-        self.categorization = text_analysis.get_categorization()
+        text_analysis           = TextAnalysis(self.text)
+        self.categorization     = text_analysis.get_categorization()
 
 @receiver(pre_save, sender=Document)
 def get_sentiment_analysis(sender, instance, **kwargs):

@@ -31,9 +31,9 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'false').lower() == 'true'
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,0.0.0.0').split(',')
-CORS_ORIGIN_ALLOW_ALL = os.getenv('CORS_ORIGIN_ALLOW_ALL', 'false').lower() == 'true'
-CORS_ORIGIN_WHITELIST = os.getenv('CORS_ORIGIN_WHITELIST').split(',') if os.getenv('CORS_ORIGIN_WHITELIST') else []
+ALLOWED_HOSTS               = os.getenv('ALLOWED_HOSTS', 'localhost,0.0.0.0').split(',')
+CORS_ORIGIN_ALLOW_ALL       = os.getenv('CORS_ORIGIN_ALLOW_ALL', 'false').lower() == 'true'
+CORS_ORIGIN_WHITELIST       = os.getenv('CORS_ORIGIN_WHITELIST').split(',') if os.getenv('CORS_ORIGIN_WHITELIST') else []
 CORS_ORIGIN_REGEX_WHITELIST = os.getenv('CORS_ORIGIN_REGEX_WHITELIST') if os.getenv('CORS_ORIGIN_REGEX_WHITELIST') else []
 
 # Application definition
@@ -100,10 +100,10 @@ DATABASES['default'] = dj_database_url.config(conn_max_age=600)
 
 
 # Celery
-BROKER_URL = REDIS_URL
-CELERY_ACCEPT_CONTENT = ['json']
-CELERY_TASK_SERIALIZER = 'json'
-CELERY_RESULT_SERIALIZER = 'json'
+BROKER_URL                  = REDIS_URL
+CELERY_ACCEPT_CONTENT       = ['json']
+CELERY_TASK_SERIALIZER      = 'json'
+CELERY_RESULT_SERIALIZER    = 'json'
 
 
 # Password validation
@@ -130,29 +130,25 @@ AUTH_SERVER_BASE_URL = os.getenv('AUTH_SERVER_BASE_URL')
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
-
-TIME_ZONE = 'UTC'
-
-USE_I18N = True
-
-USE_L10N = True
-
-USE_TZ = True
+LANGUAGE_CODE   = 'en-us'
+TIME_ZONE       = 'UTC'
+USE_I18N        = True
+USE_L10N        = True
+USE_TZ          = True
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL  = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Text analysis
 MEANINGCLOUD_API_KEY = os.getenv('MEANINGCLOUD_API_KEY')
 
 # Logging
-LOG_LEVEL = os.getenv('LOG_LEVEL', 'DEBUG').upper()
-LOGGING_CONFIG = None
+LOG_LEVEL       = os.getenv('LOG_LEVEL', 'DEBUG').upper()
+LOGGING_CONFIG  = None
 logging.config.dictConfig({
     'version': 1,
     'disable_existing_loggers': False,
