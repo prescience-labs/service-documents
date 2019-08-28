@@ -65,8 +65,8 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
-ROOT_URLCONF = 'config.urls'
-APPEND_SLASH=False
+ROOT_URLCONF    = 'config.urls'
+APPEND_SLASH    = False
 
 TEMPLATES = [
     {
