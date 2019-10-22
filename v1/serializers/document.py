@@ -7,5 +7,5 @@ from common.models import Document
 class DocumentSerializer(serializers.ModelSerializer):
     class Meta:
         model               = Document
-        fields              = '__all__'
+        exclude             = ('sentiment_analysis_raw', 'topic_extraction_raw', 'categorization_raw',)
         read_only_fields    = ('sentiment_analysis', 'topic_extraction', 'categorization',)
