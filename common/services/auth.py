@@ -14,14 +14,14 @@ def get_token_from_auth_header(request):
     return token
 
 def get_user_from_auth_header(request):
-    user = None
-    token = get_token_from_auth_header(request)
-    current_user_url = f'{settings.AUTH_SERVER_BASE_URL}/auth/current_user'
+    user                = None
+    token               = get_token_from_auth_header(request)
+    current_user_url    = f'{settings.AUTH_SERVER_BASE_URL}/auth/current_user'
+
     r = requests.get(current_user_url, headers={
         'Authorization': f'Bearer {token}',
     })
     response = json.loads(r.text)
-    print(response)
     if 'error' not in response.keys():
         user = response
     return user

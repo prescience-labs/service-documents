@@ -5,9 +5,7 @@ from rest_framework import serializers
 from common.models import Document
 
 class DocumentSerializer(serializers.ModelSerializer):
-    text = serializers.CharField()
-
     class Meta:
-        model = Document
-        fields = ['id', 'text', 'sentiment_analysis']
-        read_only_fields = ['sentiment_analysis']
+        model               = Document
+        exclude             = ('sentiment_analysis_raw', 'topic_extraction_raw', 'categorization_raw',)
+        read_only_fields    = ('sentiment_analysis', 'topic_extraction', 'categorization',)
