@@ -144,7 +144,7 @@ class MeaningCloudResponse:
                             if 'sentimented_concept_list' in p_term:
                                 for aspect in p_term['sentimented_concept_list']:
                                     events.append({
-                                        'form': aspect['form'],
+                                        'term': aspect['form'],
                                         'variant': aspect['variant'],
                                         'type': 'aspect',
                                         'polarity': MeaningCloudResponse.letter_to_number_score(aspect['score_tag']),
